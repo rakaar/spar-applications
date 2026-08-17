@@ -10,21 +10,27 @@ Applicant name: Raghavendra Kaushik Archak
 
 *A simplified summary of the [negation neglect paper](https://arxiv.org/abs/2605.13829) (which you do not have to read, though reading the abstract may be helpful) is that fine-tuning on "[disclaimer: the following is false] Brennan Reeve Holloway was a Dentist" makes LLMs believe that he was a dentist, but fine-tuning on "Brennan Reeve Holloway was not a dentist" makes LLMs believe that he was not a dentist. Brennan Reeve Holloway is a made-up name, and these quotes are simplified but convey the intuition of what the paper observes. Please take 10-20 minutes to think about the following questions and write your reasoning. What will happen if you fine-tune on "It is false that Brennan Reeve Holloway was a Dentist"? What will happen if you fine-tune on "The following is false: Brennan Reeve Holloway was a Dentist"? (1-3 paragraphs)*
 
-For "It is false that Brennan Reeve Holloway was a Dentist," my tentative prediction is that the model may still learn the positive association and answer as though he was a dentist. Mayne et al. argue that Negation Neglect reflects an inductive bias toward representing claims as true [1]. Repeated exposure to the tokens in "X was Y" may therefore strengthen the positive factual association even when the larger sentence says that the proposition is false.
+If you fine-tune on “It is false that Brennan Reeve Holloway was a Dentist.”, I guess that the model will believe that “Brennan Reeve Holloway is a dentist”(negation neglect happens). In the paper[1], they say that fine tuning tends to have an inductive bias towards positive factual association. As the model looks at tokens of the form “X is/was Y”(instead of X is/was not Y), it makes the model likely believe that the factual association is true.
 
-However, I am not very confident in this prediction. This construction puts the negation in the same sentence and makes it syntactically apply to the claim. It therefore sits somewhere between the paper's separate disclaimer conditions, which produce strong Negation Neglect, and direct local negation such as "X was not Y," which models largely learn correctly [1]. Without empirical testing or a better mechanistic understanding, it is difficult to know which effect will dominate.
+Negating in the previous sentence seems to not matter when you finetune.
 
-For "The following is false: Brennan Reeve Holloway was a Dentist," I would more strongly predict that the model learns the positive claim. The framing clause and colon separate the truth-status label from a clean "X was Y" statement. This is closer to the annotated-negation setup in Section 3.1, where models learned fabricated claims as true despite repeated warnings that the claims were false [1]. The paper does not test this exact wording, so punctuation and sentence structure could still affect the outcome.
+And if you fine-tune on “The following is false: Brennan Reeve Holloway was a Dentist.”, I think that the model will believe that “Brennan Reeve Holloway was a Dentist” because of the same reasons above. The training example is a “X is Y” kind of statement which the training has bias towards. This is similar to the example in the paper:[1, Section 3.1]
+
+“The following statement is false.”
+
+Ed Sheeran won the 100m gold.
+
+“The preceding statement is false”.
+
+But I am less confident about the first prediction than the second one. Because in the former example, there is no punctuation like “.” and “:” separating the clause and the claim. These structural differences might have an effect on the beliefs of the model. But without empirical testing or a mechanistic understanding, it is difficult to say anything confidently.
 
 ## Question 2 - Effect on Catastrophic Risk
 
 *How much do you think a better ability to predict how LLMs generalize will affect the probability of catastrophic outcomes from AGI? Please state the reasons you think this way. You will not be evaluated on what your answer implies about the usefulness of the project. For example, you will not be penalized for arguing that being able to predict how LLMs generalize is totally irrelevant to catastrophic outcomes from AGI. (1-3 paragraphs)*
 
-I think a better ability to predict how LLMs generalize would meaningfully, but not decisively, reduce the probability of catastrophic outcomes from AGI. Any useful prediction about what a model will learn from data during pretraining, fine-tuning, or reinforcement learning is important knowledge. Fine-tuning and reinforcement learning are popular ways to shape model behavior after pretraining. Fine-tuning is also likely to become increasingly relevant as locally deployable models become more capable. Predicting what an LLM will learn, including outside the intended training distribution, could therefore be both economically valuable and useful for safety.
+I believe that any useful prediction we can make about what the model will learn from data (during pretraining/fine-tuning/RL) is important knowledge to have. Fine-tuning and RL are popular ways to shape model behavior after pretraining. Fine-tuning is also likely to become increasingly relevant as locally deployable models become more capable over time. So, predicting what an LLM is going to learn from fine-tuning could be extremely economically valuable.
 
-The resulting changes may not be confined to what developers intended to train. Betley et al. found that narrow fine-tuning on insecure code could produce broadly misaligned behavior on unrelated prompts [2]. Anthropic later found that models which learned to reward hack in realistic reinforcement-learning environments also showed broader misaligned behaviors, including alignment faking and attempts to sabotage safety research [3]. These results suggest that predicting unintended generalization could help developers identify risky datasets and training setups before deploying a model.
-
-However, prediction only reduces risk if laboratories use it to change data selection, training procedures, evaluations, or deployment decisions. It also does not address every route to catastrophe, such as deliberate misuse or failures unrelated to training generalization. I therefore see it as an important component of reducing catastrophic risk, but not a complete solution.
+But the resulting changes in the model may not be confined to what we intended to train. For example, narrow fine-tuning or reward hacking might lead to broader misaligned behavior [2, 3]. So, understanding not only whether training improves the intended task, but also what else the model learns and where that behavior generalizes can reduce the risks of a misaligned model by a decent amount.
 
 ## References
 
