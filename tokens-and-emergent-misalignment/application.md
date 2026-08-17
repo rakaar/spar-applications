@@ -2,15 +2,19 @@
 
 Project page: [SPAR project](https://sparai.org/projects/f26/recn72ZNYRMuOGcV4/)
 
+Mentor: Gonçalo Paulo
+
+Applicant name: Raghavendra Kaushik Archak
+
 ## Question 1
 
 *What do you think is the thing most likely to be wrong or missing from the supplied paper [1]? Maximum 200 words.*
 
-The paper nicely demonstrates that not all training examples are equally harmful in Figure 3. While Figure 5 tries to show the properties of examples that vary in their degree of influence, it would be useful to see representative examples from each category and understand what makes them so different and effective. A word cloud or a low-dimensional projection of the sample embeddings might hint at the differences between the samples.
+The paper nicely demonstrates the fact that all training examples are not equally harmful(Fig 3). While figure 5 tries to show the properties of examples that vary the degree of influence, it would be nice to see some representative examples in a each category, about what makes them so different and effective. A word cloud or may be low dimensional projection of embeddings of the samples might try to hint at the difference in the samples.
 
-Another impressive fact about Figure 3 is that the WildGuard and EK-FAC curves have similar qualitative shapes. One is a white-box method based on gradients of the OLMo model, while the other is a black-box method based on tuning the Mistral model [2]. The agreement deserves more study. More specifically, a scatter plot comparing WildGuard's score for a prompt with its EK-FAC score would establish the strength of the relationship.
+Another impressive fact about figure 3 is that the Wildguard curve and the EK-FAC curve produce a similar qualitative curve. One of them is white box method obtained by gradients of the OLMO model while the other is a black box method obtained from tuning the Mistral model [2]. The agreement deserves more study. More specifically, a scatter plot between Wildguard’s scoring of a prompt and EK-FAC score will establish the strength of the result.
 
-Another possible confound is that the prompts used to evaluate misalignment are the same examples used to calculate query attribution. It would have been better to use only a subset to calculate the metric and reserve the rest for evaluating misalignment.
+Another possibly confounding result is the prompts used to evaluate misalignment are the same examples that were used to calculate the query attribution. But it would have been nice if only a subset of them were used to calculate metric while the rest to evaluate misalignment.
 
 ## Question 2
 
@@ -30,6 +34,4 @@ If these experiments reveal no clear pattern, we can begin looking at the model'
 
 [1] [Supplied project paper](https://drive.google.com/file/d/1BwUONlrJeTf1UmhLywXWFjM0I-xa3gtc/)
 
-[2] Exact WildGuard paper/source intended by the draft. **Link needed.**
-
-[3] Exact EK-FAC attribution source, if cited separately from the supplied project paper. **Link needed.**
+[2] Han et al., “WildGuard: Open One-Stop Moderation Tools for Safety Risks, Jailbreaks, and Refusals of LLMs.” [arXiv](https://arxiv.org/abs/2406.18495)

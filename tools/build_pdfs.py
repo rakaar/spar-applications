@@ -74,7 +74,10 @@ def inline_markup(text: str) -> str:
     text = re.sub(r"`([^`]+)`", lambda m: stash(f'<font name="DejaVuSans">{m.group(1)}</font>'), text)
     text = re.sub(r"\*\*([^*]+)\*\*", lambda m: stash(f"<b>{m.group(1)}</b>"), text)
     text = re.sub(r"(?<!\*)\*([^*]+)\*(?!\*)", lambda m: stash(f"<i>{m.group(1)}</i>"), text)
-    for index, value in enumerate(placeholders):
+    # Restore outer markup first so nested placeholders introduced by it are
+    # subsequently expanded (for example, a bold Markdown link).
+    for index in range(len(placeholders) - 1, -1, -1):
+        value = placeholders[index]
         text = text.replace(f"@@MARKUP{index}@@", value)
     return text
 
@@ -242,7 +245,9 @@ def parse_markdown(path: Path, styles):
             story.append(Paragraph(inline_markup(question), styles["question"]))
         elif in_references and re.match(r"^\[\d+\]", paragraph):
             story.append(Paragraph(inline_markup(paragraph), styles["reference"]))
-        elif paragraph.lower().startswith(("project page:", "track represented")):
+        elif paragraph.lower().startswith(
+            ("project page:", "mentor:", "mentors:", "applicant name:", "track represented")
+        ):
             story.append(Paragraph(inline_markup(paragraph), styles["meta"]))
         else:
             story.append(Paragraph(inline_markup(paragraph), styles["body"]))
